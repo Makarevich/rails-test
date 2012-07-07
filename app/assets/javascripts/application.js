@@ -16,6 +16,9 @@
 //= require_tree .
 
 $(function(){
+  var ajax_url = '/ajax'
+  var ajax_vote_url = '/ajax/vote'
+
   var votes = [1, 4, 2, 4, 3];
 
   var controller = {
