@@ -122,5 +122,7 @@ $(function(){
   $('#button-vote-again').click(function() {
     controller.switch_to('vote');
   });
+
+  $('#source-link').tooltip();
 });
 
