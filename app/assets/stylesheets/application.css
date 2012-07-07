@@ -9,5 +9,18 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
+ *= require bootstrap
  *= require_tree .
  */
+
+ [class *= 'span'] {
+     text-align: center;
+ }
+
+ img {
+     margin: 0.5cm;
+ }
+
+ #panel-container > div {
+     display: none;
+ }

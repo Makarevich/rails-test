@@ -1,1 +1,24 @@
-%h1 Hello, world
+.row
+ .span12 
+  %img{:src => 'mona_lisa.jpg'}
+
+#panel-container
+ #panel-loading{:style => 'display:block'}
+  .row
+   .span12 
+    %h1 Loading, please wait...
+ 
+ #panel-vote
+  .row
+   .span12 
+    %h2 Vote for the painting
+  .row#voting-buttons
+
+ #panel-results
+  .row
+   .span12 
+    %h1 Results
+  #result-container
+  .row
+   .span12 
+    %button#button-vote-again.btn.btn-primary Vote again
