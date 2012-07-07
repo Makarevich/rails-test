@@ -1,4 +1,8 @@
 Voter::Application.routes.draw do
+  # NOTE: these are hardcoded in js assets
+  get "ajax" => 'ajax#index'
+  get "ajax/vote"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

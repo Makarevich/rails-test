@@ -16,7 +16,8 @@
 //= require_tree .
 
 $(function(){
-  var votes = [1, 4, 2, 4, 3];
+  var ajax_url      = '/ajax'
+  var ajax_vote_url = '/ajax/vote'
 
   var controller = {
 
@@ -25,51 +26,51 @@ $(function(){
     },
 
     vote_handler : function(key) {
-      // store new vote
-      votes[key]++;
+      // switch to processing panel
+      controller.switch_to('processing');
 
-      var sum = 0;
-      for(var i = 0; i < votes.length; i++)
-        sum += votes[i];
+      // send vote request to the server
+      jQuery.getJSON(ajax_vote_url, {id:key}, function(data){
+        var sum = 0;
+        for(var i in data) sum += data[i].count
 
-      // generate results
-      for(var i = 0; i < votes.length; i++) {
-        this.progress_bars[i].set_width(votes[i], sum);
-      }
+        for(var i in data) {
+          controller.progress_bars[data[i].id]
+                      .set_width(data[i].count, sum)
+        }
 
-      this.switch_to('results');
+        controller.switch_to('results');
+      });
     },
 
-    on_load : function() {
+    on_load : function(votes) {
       // add voting buttons
       (function(){
-        var w = Math.floor(12 / votes.length);
-
         var cont = $('#panel-vote #voting-buttons');
 
-        for(var i = 0; i < votes.length; i++) {
+        for(var i in votes) {
           (function(index){
             return $(document.createElement('button'))
-              .text(i+1)
+              .text(index)
               .addClass('btn')
               .addClass('btn-primary')
               .click(function() {
                 controller.vote_handler(index)
               })
               .appendTo(cont)
-          })(i);
+          })(votes[i].id);
         }
       })();
 
       // generate progress bars
-      for(var i = 0; i < votes.length; i++) {
+      for(var i in votes) {
         var bar = 
         $(document.createElement('div'))
         .addClass('row')
         .append(
           $(document.createElement('div'))
           .addClass('span1')
-          .text(i+1)
+          .text(votes[i].id)
         )
         .append(
           $(document.createElement('div'))
@@ -96,7 +97,7 @@ $(function(){
           $('div:last', this).text( amount )
         }
 
-        this.progress_bars[i] = bar;
+        this.progress_bars[votes[i].id] = bar
       }
 
 
@@ -104,13 +105,20 @@ $(function(){
       this.switch_to('vote');
     },
 
-
-    progress_bars : new Array(votes.length)
+    progress_bars : {}
   };
 
-  controller.on_load();
+  // setup ajax
+  $('body').ajaxError(function(ev, req, opt, error) {
+    alert('Error requesting ' + opt.url + ': ' + error);
+  });
 
-  // attach handlers
+  // query server status
+  jQuery.getJSON(ajax_url, function(data){
+    controller.on_load(data);
+  });
+
+  // attach ui handlers
   $('#button-vote-again').click(function() {
     controller.switch_to('vote');
   });

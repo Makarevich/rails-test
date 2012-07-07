@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  id:     1
+  count:  4
+
+two:
+  id:     2
+  count:  8
+
+thr:
+  id:     3
+  count:  7
+
+four:
+  id:     4
+  count:  5
+
+five:
+  id:     5
+  count:  13
+
+six:
+  id:     6
+  count:  10
