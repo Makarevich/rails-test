@@ -19,6 +19,7 @@ $(function(){
   var votes = [1, 4, 2, 4, 3];
 
   var controller = {
+
     switch_to : function(panel_id) {
       $('#panel-' + panel_id).show().siblings().hide();
     },
@@ -33,6 +34,41 @@ $(function(){
 
       // generate results
       for(var i = 0; i < votes.length; i++) {
+        this.progress_bars[i].set_width(votes[i], sum);
+      }
+
+      this.switch_to('results');
+    },
+
+    on_load : function() {
+      // add voting buttons
+      (function(){
+        var w = Math.floor(12 / votes.length);
+
+        var cont = $('#panel-vote #voting-buttons');
+
+        for(var i = 0; i < votes.length; i++) {
+
+          var btn = (function(index){
+            return $(document.createElement('button'))
+              .text(i+1)
+              .addClass('btn')
+              .addClass('btn-primary')
+              .click(function() {
+                controller.vote_handler(index)
+              })
+          })(i);
+
+          $(document.createElement('div'))
+            .addClass('span' + w)
+            .append(btn)
+            .appendTo(cont);
+        }
+      })();
+
+      // generate progress bars
+      for(var i = 0; i < votes.length; i++) {
+        var bar = 
         $(document.createElement('div'))
         .addClass('row')
         .append(
@@ -47,48 +83,34 @@ $(function(){
           .append(
             $(document.createElement('div'))
             .addClass('bar')
-            .attr('style',
-              'width:' + Math.floor(100*votes[i]/sum) + '%')
           )
         )
         .append(
           $(document.createElement('div'))
           .addClass('span2')
           // .text('' + 100+'*'+votes[i]+'/'+sum)
-          .text(votes[i])
         )
         .appendTo( $('#panel-results #result-container') )
+
+        if(bar.set_width) alert('Redefining set_width');
+
+        bar.set_width = function(amount, sum) {
+          $('.progress > .bar', this).attr('style',
+            'width:' + Math.floor(100 * amount / sum) + '%')
+
+          $('div:last', this).text( amount )
+        }
+
+        this.progress_bars[i] = bar;
       }
 
-      this.switch_to('results');
+
+      // switch to vote panel
+      this.switch_to('vote');
     },
 
-    on_load : function() {
-      // add voting buttons
-      var w = Math.floor(12 / votes.length);
 
-      var cont = $('#panel-vote #voting-buttons');
-
-      for(var i = 0; i < votes.length; i++) {
-
-        var btn = (function(index){
-          return $(document.createElement('button'))
-            .text(i+1)
-            .addClass('btn')
-            .addClass('btn-primary')
-            .click(function() {
-              controller.vote_handler(index)
-            })
-        })(i);
-
-        $(document.createElement('div'))
-          .addClass('span' + w)
-          .append(btn)
-          .appendTo(cont);
-      }
-
-      this.switch_to('vote');
-    }
+    progress_bars : new Array(votes.length)
   };
 
   controller.on_load();
