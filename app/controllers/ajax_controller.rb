@@ -3,8 +3,7 @@ class AjaxController < ApplicationController
 
   def index
     @json = {
-      :name => 'index',
-      :other => 100,
+      :id => Vote.order(:id).select(:id).to_a
     }
     render 'json'
   end
