@@ -14,13 +14,18 @@
  */
 
  [class *= 'span'] {
-     text-align: center;
+   text-align: center;
  }
 
+ #voting-buttons button {
+   margin: 0.5cm;
+ }
+
+
  img {
-     margin: 0.5cm;
+   margin: 0.5cm;
  }
 
  #panel-container > div {
-     display: none;
+   display: none;
  }

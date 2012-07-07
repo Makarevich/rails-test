@@ -48,8 +48,7 @@ $(function(){
         var cont = $('#panel-vote #voting-buttons');
 
         for(var i = 0; i < votes.length; i++) {
-
-          var btn = (function(index){
+          (function(index){
             return $(document.createElement('button'))
               .text(i+1)
               .addClass('btn')
@@ -57,12 +56,8 @@ $(function(){
               .click(function() {
                 controller.vote_handler(index)
               })
+              .appendTo(cont)
           })(i);
-
-          $(document.createElement('div'))
-            .addClass('span' + w)
-            .append(btn)
-            .appendTo(cont);
         }
       })();
 
