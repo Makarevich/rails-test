@@ -2,8 +2,7 @@ class AjaxController < ApplicationController
   layout false
 
   def index
-    @json = Vote.order(:id).select(:id).to_a
-    render 'json'
+    render :json => Vote.order(:id).select(:id).to_a
   end
 
   def vote
@@ -13,7 +12,6 @@ class AjaxController < ApplicationController
       v.save
     end
 
-    @json = Vote.order(:id).to_a
-    render 'json'
+    render :json => Vote.order(:id).to_a
   end
 end
