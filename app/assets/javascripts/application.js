@@ -16,8 +16,36 @@
 //= require_tree .
 
 $(function(){
-  var ajax_url      = '/ajax'
-  var ajax_vote_url = '/ajax/vote'
+  var ajax = {
+    register : function(succ, fail) {
+      this.server_call(this.ajax_url, {}, succ, fail);
+    },
+
+    vote : function (key, succ, fail) {
+      this.server_call(this.ajax_vote_url, {id:key}, succ, fail);
+    },
+
+    server_call : function(url, params, succ, fail) {
+      jQuery.getJSON(url, params, function(data){
+        if(data.error){
+          $('#login-box > a').show().siblings().hide();
+          fail();
+          return;
+        }
+
+        $('#login-box #username').text(data.name);
+
+        $('#login-box > div').show().siblings().hide();
+
+        succ(data.data);
+      });
+    },
+
+    ajax_url      : '/ajax',
+    ajax_vote_url : '/ajax/vote'
+  };
+
+
 
   var controller = {
 
@@ -30,7 +58,7 @@ $(function(){
       controller.switch_to('processing');
 
       // send vote request to the server
-      jQuery.getJSON(ajax_vote_url, {id:key}, function(data){
+      ajax.vote(key, function(data){
         var sum = 0;
         for(var i in data) sum += data[i].count
 
@@ -40,10 +68,12 @@ $(function(){
         }
 
         controller.switch_to('results');
+      }, function(){
+        alert('voting failed!');
       });
     },
 
-    on_load : function(votes) {
+    prepare_voting : function(votes) {
       // add voting buttons
       (function(){
         var cont = $('#panel-vote #voting-buttons');
@@ -105,6 +135,11 @@ $(function(){
       this.switch_to('vote');
     },
 
+    display_unauth : function () {
+      // switch to need-auth panel
+      this.switch_to('need-auth');
+    },
+
     progress_bars : {}
   };
 
@@ -114,8 +149,10 @@ $(function(){
   });
 
   // query server status
-  jQuery.getJSON(ajax_url, function(data){
-    controller.on_load(data);
+  ajax.register(function(data){
+    controller.prepare_voting(data);
+  }, function() {
+    controller.display_unauth();
   });
 
   // attach ui handlers
