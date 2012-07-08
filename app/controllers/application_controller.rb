@@ -24,16 +24,16 @@ class ApplicationController < ActionController::Base
       return
     end
 
-    if params[:access_token]
-      session[:code] = params[:access_token]
+    if params[:code]
+      session[:code] = params[:code]
       redirect_to index_path
       return
     end
 
     redirect_to "https://www.facebook.com/dialog/oauth"+
       "?client_id=#{@@FACEBOOK_CLIENT_ID}"+
-      "&response_type=token"+
-      "&redirect_uri=#{login_url}"
+      #"&response_type=token"+
+      "&redirect_uri=#{CGI::escape login_url}"
   end
 
   def logout

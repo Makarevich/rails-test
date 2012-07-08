@@ -1,4 +1,5 @@
 require 'net/http'
+require 'cgi'
 
 class AjaxController < ApplicationController
   layout false
@@ -7,23 +8,38 @@ class AjaxController < ApplicationController
     if session[:code]
       # TODO: authenticate on facebook; set up :name
 
-      #uri = URI 'https://graph.facebook.com/oauth/access_token' +
-      #  "?client_id=#{ApplicationController::get_facebook_client_id}" +
-      #  "&client_secret=#{ApplicationController::get_facebook_secret}" +
-      #  "&code=#{session[:code]}" +
-      #  "&redirect_uri=#{index_url}"
-
-      #puts uri
-
-      #resp = Net::HTTP.start(uri.host, uri.port, :use_ssl => true, :set_debug_output => $stdout) do |http|
-      #  ggg = Net::HTTP::Get.new uri.request_uri
-      #  puts ggg.inspect
-      #  http.request ggg
-      #end
+      resp = call_https 'https://graph.facebook.com/oauth/access_token' +
+        "?client_id=#{ApplicationController::get_facebook_client_id}" +
+        "&client_secret=#{ApplicationController::get_facebook_secret}" +
+        "&code=#{session[:code]}" +
+        "&redirect_uri=#{CGI::escape login_url}"
 
       #puts resp.inspect
+      #puts resp.read_body.inspect
 
-      session[:name] = 'Anonymous'
+      if resp.kind_of? Net::HTTPSuccess
+        access_token = CGI::parse(resp.read_body)["access_token"][0]
+      else
+        puts "<resp failed!!!>"
+        render :json => { :error => true }
+        return
+      end
+
+      #puts 'Token:', access_token.inspect
+
+      resp = call_https 'https://graph.facebook.com/me' +
+        "?access_token=#{access_token}"
+
+      #puts resp.inspect
+      #puts resp.read_body.inspect
+
+      if resp.kind_of? Net::HTTPSuccess
+        session[:name] = ActiveSupport::JSON::decode(resp.read_body)["name"]
+      else
+        puts "<resp failed!!!>"
+        render :json => { :error => true }
+        return
+      end
     end
 
     if session[:name]
@@ -52,5 +68,15 @@ class AjaxController < ApplicationController
     end
 
     render :json => { :error => true }
+  
+  end
+
+  private 
+
+  def call_https(uri)
+    uri = URI uri
+    Net::HTTP.start(uri.host, uri.port, :use_ssl => true) do |http|
+      http.request Net::HTTP::Get.new uri.request_uri
+    end
   end
 end
