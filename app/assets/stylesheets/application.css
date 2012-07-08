@@ -45,3 +45,24 @@
 
    font-size: 0.5cm;
  }
+
+
+ #login-box {
+   position: absolute;
+   top: 0.5cm;
+   right: 0.5cm;
+
+   text-align: center;
+ }
+
+ #login-box > * {
+   display: none;
+ }
+
+ #login-box > div {
+   border:  solid gray 1px;
+   padding: 0.7em;
+ }
+
+
+

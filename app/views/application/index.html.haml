@@ -1,6 +1,17 @@
 %a#source-link{:href => 'https://github.com/Makarevich/rails-test', :title => 'View the site\'s sources at github.com'}
  View sources
 
+#login-box
+ %a.btn.btn-primary{:href => login_url, :style => 'display:block'} Login via Facebook
+ %div
+  %p
+   Hello,
+   %span#username
+   \!
+  %p
+   %a.btn{:href => logout_url} Logout
+ 
+
 %center
  %img{:src => 'mona_lisa.jpg'}
 

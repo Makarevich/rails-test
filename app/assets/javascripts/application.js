@@ -28,9 +28,14 @@ $(function(){
     server_call : function(url, params, succ, fail) {
       jQuery.getJSON(url, params, function(data){
         if(data.error){
+          $('#login-box > a').show().siblings().hide();
           fail();
           return;
         }
+
+        $('#login-box #username').text(data.name);
+
+        $('#login-box > div').show().siblings().hide();
 
         succ(data.data);
       });
