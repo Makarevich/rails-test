@@ -26,7 +26,9 @@ class AjaxController < ApplicationController
         v.save
       end
 
-      render :json => Vote.order(:id).to_a
+      render :json => {
+        :data => Vote.order(:id).to_a
+      }
       return
     end
 

@@ -1,4 +1,4 @@
-%a#source-link{:href => 'https://github.com/Makarevich/rails-test', :title => 'View sources at github.com'}
+%a#source-link{:href => 'https://github.com/Makarevich/rails-test', :title => 'View the site\'s sources at github.com'}
  View sources
 
 %center
@@ -14,9 +14,17 @@
   %center
    %h1 Processing, please wait...
  
+ #panel-need-auth
+  %center
+   %h1 Authentication needed
+   %p
+    To be able to rate the painting
+    you have to
+    %a{:href => login_url} authenticate via facebook.
+
  #panel-vote
   %center
-   %h2 Vote for the painting
+   %h2 Rate the painting
   %center
    #voting-buttons
 
