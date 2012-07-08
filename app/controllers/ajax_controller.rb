@@ -17,6 +17,7 @@ class AjaxController < ApplicationController
 
       resp = Net::HTTP.start(uri.host, uri.port, :use_ssl => true) do |http|
         req_uri = uri.request_uri
+        puts req_uri.inspect
         ggg = Net::HTTP::Get.new req_uri
         puts ggg.inspect
         http.request ggg
