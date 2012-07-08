@@ -3,6 +3,12 @@ class ApplicationController < ActionController::Base
 
   @@FACEBOOK_CLIENT_ID = ''
 
+  def self.get_facebook_client_id
+    @@FACEBOOK_CLIENT_ID
+  end
+
+  #######
+
   def index
     puts request.host_with_port
   end
@@ -22,4 +28,12 @@ class ApplicationController < ActionController::Base
     redirect_to "https://www.facebook.com/dialog/oauth?client_id=#{@@FACEBOOK_CLIENT_ID}"+
       "&redirect_uri=#{login_url}"
   end
+
+  def logout
+    session[:code] = nil
+    session[:name] = nil
+
+    redirect_to index_path
+  end
+
 end

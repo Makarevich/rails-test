@@ -40,5 +40,16 @@ describe ApplicationController do
       response.should redirect_to(index_path)
     end
   end
+
+  describe 'logout' do
+    it 'should clear the session and redirect to index' do
+      get :logout
+
+      session[:code].should be_nil
+      session[:name].should be_nil
+
+      response.should redirect_to(index_path)
+    end
+  end
 end
 

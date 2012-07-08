@@ -3,7 +3,8 @@ Voter::Application.routes.draw do
   get 'ajax' => 'ajax#index'
   get 'ajax/vote'
 
-  get 'login' => 'application#login'
+  get 'login'  => 'application#login'
+  get 'logout' => 'application#logout'
 
   root :to => 'application#index', :as => 'index'
 
