@@ -1,4 +1,4 @@
-require 'net/http'
+require 'open-uri'
 
 class AjaxController < ApplicationController
   layout false
@@ -7,7 +7,7 @@ class AjaxController < ApplicationController
     if session[:code]
       # TODO: authenticate on facebook; set up :name
 
-      resp = Net::HTTP.get URI 'https://graph.facebook.com/oauth/access_token' +
+      resp = open 'https://graph.facebook.com/oauth/access_token' +
         "?client_id=#{ApplicationController::get_facebook_client_id}" +
         "&client_secret=#{ApplicationController::get_facebook_secret}" +
         "&code=#{session[:code]}"
