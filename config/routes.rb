@@ -1,7 +1,11 @@
 Voter::Application.routes.draw do
   # NOTE: these are hardcoded in js assets
-  get "ajax" => 'ajax#index'
-  get "ajax/vote"
+  get 'ajax' => 'ajax#index'
+  get 'ajax/vote'
+
+  get 'login' => 'application#login'
+
+  root :to => 'application#index', :as => 'index'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -53,7 +57,6 @@ Voter::Application.routes.draw do
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
   # root :to => 'welcome#index'
-  root :to => 'application#index'
 
   # See how all your routes lay out with "rake routes"
 
