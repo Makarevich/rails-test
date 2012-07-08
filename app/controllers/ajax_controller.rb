@@ -10,7 +10,10 @@ class AjaxController < ApplicationController
       uri = URI 'https://graph.facebook.com/oauth/access_token' +
         "?client_id=#{ApplicationController::get_facebook_client_id}" +
         "&client_secret=#{ApplicationController::get_facebook_secret}" +
-        "&code=#{session[:code]}"
+        "&code=#{session[:code]}" +
+        "&redirect_uri=google.com"
+
+      puts uri
 
       resp = Net::HTTP.start(uri.host, uri.port, :use_ssl => true) do |http|
         http.request Net::HTTP::Get.new uri.request_uri
