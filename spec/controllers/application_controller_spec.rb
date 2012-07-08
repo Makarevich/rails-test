@@ -5,7 +5,7 @@ describe ApplicationController do
   describe 'login' do
     it 'should redirect to facebook oauth' do
       get :login
-      response.redirect_url.should match(%r{^https://www\.facebook\.com/dialog/oauth\?client_id=.*\&redirect_uri=.*/login})
+      response.redirect_url.should match(%r{^https://www\.facebook\.com/dialog/oauth\?client_id=.*\&redirect_uri=.*login})
     end
 
     it 'should store the facebook code in the session' do
