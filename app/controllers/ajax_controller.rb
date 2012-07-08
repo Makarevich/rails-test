@@ -11,7 +11,7 @@ class AjaxController < ApplicationController
         "?client_id=#{ApplicationController::get_facebook_client_id}" +
         "&client_secret=#{ApplicationController::get_facebook_secret}" +
         "&code=#{session[:code]}" +
-        "&redirect_uri=google.com"
+        "&redirect_uri=#{index_url}"
 
       puts uri
 
